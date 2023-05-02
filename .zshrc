@@ -74,17 +74,23 @@ COMPLETION_WAITING_DOTS="true"
 # Which plugins would you like to load?
 # Standard plugins can be found in $ZSH/plugins/
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-# Add wisely, as too many plugins slow down shell startup.
-plugins=(vi-mode keychain gpg-agent history-substring-search zsh-autosuggestions command-not-found git conda-zsh-completion dirhistory)
+# Some plugins require manual installation:
+# git clone https://github.com/zsh-users/zsh-history-substring-search ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-history-substring-search
+# git clone https://github.com/esc/conda-zsh-completion ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/conda-zsh-completion
+# git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+plugins=(vi-mode tmux keychain gpg-agent history-substring-search zsh-autosuggestions command-not-found git conda-zsh-completion dirhistory web-search colored-man-pages pj)
 
 # User configuration
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=244"
 zstyle :omz:plugins:keychain agents gpg,ssh
 zstyle :omz:plugins:keychain identities id_ed25519
 zstyle :omz:plugins:keychain options --quiet
+ZSH_TMUX_AUTOSTART=true
+ZSH_TMUX_UNICODE=true
+ZSH_TMUX_DEFAULT_SESSION_NAME="primary"
+ZSH_TMUX_FIXTERM=false
 zstyle ':completion::complete:*' use-cache 1
-zstyle ":conda_zsh_completion:*" use-groups true
+zstyle ':conda_zsh_completion:*' use-groups true
 
 source $ZSH/oh-my-zsh.sh
 
@@ -112,10 +118,10 @@ export EDITOR='vim'
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.
 # For a full list of active aliases, run `alias`.
 #
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
-# https://github.com/Peltoche/lsd
+alias zshconf="vim ~/.zshrc"
+alias vimconf="vim ~/.vimrc"
+alias config='/usr/bin/git --git-dir=/home/michael/.cfg/ --work-tree=/home/michael'
+unalias la
 alias ls=lsd
 alias pip3='DISPLAY= pip3'
 alias pip='DISPLAY= pip'
@@ -152,13 +158,17 @@ bindkey "^Z" Resume
 # zle -N vi-yank-xclip
 # bindkey -M vicmd 'y' vi-yank-xclip
 
-export LESS_TERMCAP_mb=$'\e[1;32m'
-export LESS_TERMCAP_md=$'\e[1;32m'
-export LESS_TERMCAP_me=$'\e[0m'
-export LESS_TERMCAP_se=$'\e[0m'
-export LESS_TERMCAP_so=$'\e[01;33m'
-export LESS_TERMCAP_ue=$'\e[0m'
-export LESS_TERMCAP_us=$'\e[1;4;31m'
+# export LESS_TERMCAP_mb=$'\e[1;32m'
+# export LESS_TERMCAP_md=$'\e[1;32m'
+# export LESS_TERMCAP_me=$'\e[0m'
+# export LESS_TERMCAP_se=$'\e[0m'
+# export LESS_TERMCAP_so=$'\e[01;33m'
+# export LESS_TERMCAP_ue=$'\e[0m'
+# export LESS_TERMCAP_us=$'\e[1;4;31m'
+#
+la() {
+    ls -alh --color=always "$@" | less -R;
+}
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
@@ -181,4 +191,3 @@ eval "$(direnv hook zsh)"
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
-alias config='/usr/bin/git --git-dir=/home/michael/.cfg/ --work-tree=/home/michael'
