@@ -1,5 +1,7 @@
 [user]
-	email = michael@mplang.net
-	name = Michael P. Lang
-[init]
-	defaultBranch = main
+    name = Michael P. Lang
+    email = mlang@diameterhealth.com
+[pull]
+	ff = only
+[core]
+    editor = vim
