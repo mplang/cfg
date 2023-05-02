@@ -204,6 +204,9 @@ nnoremap <leader>g3 :diffget //3<CR>
 "nnoremap <leader>iu :!ino upload<CR>
 "nnoremap <leader>is :!ino serial<CR>
 
+" Remove trailing whitespace
+nnoremap <silent> <leader>rw :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar><CR>
+
 " ALE now takes care of the following; kept for posterity
 " Remove trailing whitespace on save
 " autocmd BufWritePre * %s/\s\+$//e
