@@ -3,3 +3,5 @@
 	name = Michael P. Lang
 [init]
 	defaultBranch = main
+[diff]
+	tool = vimdiff
