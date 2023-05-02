@@ -89,6 +89,7 @@ ZSH_TMUX_AUTOSTART=true
 ZSH_TMUX_UNICODE=true
 ZSH_TMUX_DEFAULT_SESSION_NAME="primary"
 ZSH_TMUX_FIXTERM=false
+PROJECT_PATHS=(~/code)
 zstyle ':completion::complete:*' use-cache 1
 zstyle ':conda_zsh_completion:*' use-groups true
 
@@ -120,14 +121,11 @@ export EDITOR='vim'
 #
 alias zshconf="vim ~/.zshrc"
 alias vimconf="vim ~/.vimrc"
-alias config='/usr/bin/git --git-dir=/home/michael/.cfg/ --work-tree=/home/michael'
+alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 unalias la
 alias ls=lsd
 alias pip3='DISPLAY= pip3'
 alias pip='DISPLAY= pip'
-alias zshconfig="vim ~/.zshrc"
-alias tmuxconfig="vim ~/.tmux.conf"
-alias vimconfig="vim ~/.vimrc"
 
 export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2; exit;}'):0.0
 export BROWSER=wslview
