@@ -74,13 +74,21 @@ COMPLETION_WAITING_DOTS="true"
 # Which plugins would you like to load?
 # Standard plugins can be found in $ZSH/plugins/
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-# Add wisely, as too many plugins slow down shell startup.
-plugins=(vi-mode history-substring-search zsh-autosuggestions command-not-found git nvm conda-zsh-completion jira dirhistory)
+# Some plugins require manual installation:
+# git clone https://github.com/zsh-users/zsh-history-substring-search ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-history-substring-search
+# git clone https://github.com/esc/conda-zsh-completion ${ZSH_CUSTOM:=~/.oh-my-zsh/custom}/plugins/conda-zsh-completion
+# git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+
+plugins=(vi-mode tmux history-substring-search zsh-autosuggestions command-not-found git nvm conda-zsh-completion jira dirhistory web-search colored-man-pages pj mvn)
 
 # User configuration
 
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=244"
+ZSH_TMUX_AUTOSTART=true
+ZSH_TMUX_UNICODE=true
+ZSH_TMUX_DEFAULT_SESSION_NAME="primary"
+ZSH_TMUX_FIXTERM=false
+PROJECT_PATHS=(~/dhdev)
 export NVM_HOMEBREW=$(brew --prefix nvm)
 zstyle ':completion::complete:*' use-cache 1
 zstyle ':conda_zsh_completion:*' use-groups true
@@ -115,9 +123,9 @@ export EDITOR='vim'
 # For a full list of active aliases, run `alias`.
 #
 # Example aliases
-alias zshconfig="vim ~/.zshrc"
-alias tmuxconfig="vim ~/.tmux.conf"
-alias vimconfig="vim ~/.vimrc"
+alias zshconf="vim ~/.zshrc"
+alias vimconf="vim ~/.vimrc"
+alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 unalias la
 alias ls=lsd
 export HOMEBREW_CASK_OPTS="--appdir=~/Applications"
@@ -128,15 +136,6 @@ export JIRA_NAME="Michael Lang"
 export NODE_PATH=$(npm root -g)
 
 eval `gdircolors ~/.dircolors`
-
-export LESS_TERMCAP_mb=$'\e[1;32m'
-export LESS_TERMCAP_md=$'\e[1;32m'
-export LESS_TERMCAP_me=$'\e[0m'
-export LESS_TERMCAP_se=$'\e[0m'
-export LESS_TERMCAP_so=$'\e[1;33mm'
-export LESS_TERMCAP_ue=$'\e[0m'
-export LESS_TERMCAP_us=$'\e[1;4;31m'
-
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
@@ -158,7 +157,6 @@ bindkey "^Z" Resume
 la() {
     ls -alh --color=always "$@" | less -R;
 }
-
 
 export PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
 export PUPPETEER_EXECUTABLE_PATH=`which chromium`
