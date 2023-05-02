@@ -76,7 +76,7 @@ COMPLETION_WAITING_DOTS="true"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Some plugins require manual installation:
 # git clone https://github.com/zsh-users/zsh-history-substring-search ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-history-substring-search
-# git clone https://github.com/esc/conda-zsh-completion ${ZSH_CUSTOM:=~/.oh-my-zsh/custom}/plugins/conda-zsh-completion
+# git clone https://github.com/esc/conda-zsh-completion ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/conda-zsh-completion
 # git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 
 plugins=(vi-mode tmux history-substring-search zsh-autosuggestions command-not-found git nvm conda-zsh-completion jira dirhistory web-search colored-man-pages pj mvn)
@@ -122,7 +122,6 @@ export EDITOR='vim'
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.
 # For a full list of active aliases, run `alias`.
 #
-# Example aliases
 alias zshconf="vim ~/.zshrc"
 alias vimconf="vim ~/.vimrc"
 alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
@@ -135,7 +134,7 @@ export JIRA_RAPID_BOARD=true
 export JIRA_NAME="Michael Lang"
 export NODE_PATH=$(npm root -g)
 
-eval `gdircolors ~/.dircolors`
+eval `gdircolors ~/.dir_colors`
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
@@ -145,6 +144,8 @@ timezsh() {
     for i in $(seq 1 10); do /usr/bin/time $shell -i -c exit; done
 }
 
+
+# Allow ctrl-z to toggle between suspend and resume
 function Resume() {
     fg
     zle push-input
