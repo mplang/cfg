@@ -17,38 +17,34 @@ filetype off        " required before loading plugins
 " OS-specific plugin settings
 if g:env == 'WINDOWS'
     set rtp+=C:/ProgramData/chocolatey/bin/ " Substitute local fzf install location
-    set rtp+=$HOME/.vim/bundle/Vundle.vim/
-    call vundle#begin('$HOME/.vim/bundle/')
+    call plug#begin()
 else
     " Since I only use Windows or Linux, I'm lazy and assume Linux here
     set rtp+=/usr/bin/fzf   " Substitute local fzf install location
-    set rtp+=~/.vim/bundle/Vundle.vim
-    call vundle#begin()
+    call plug#begin()
 endif
 
-Plugin 'VundleVim/Vundle.vim'
+Plug 'altercation/vim-colors-solarized'
+" Plug 'nanotech/jellybeans.vim'
+Plug 'tpope/vim-fugitive'
+Plug 'airblade/vim-gitgutter'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-commentary'
+Plug 'scrooloose/nerdtree'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'junegunn/fzf'   " must install fzf locally
+Plug 'junegunn/fzf.vim'
+Plug 'w0rp/ale'
+Plug 'pangloss/vim-javascript'
+Plug 'mhinz/vim-startify'
+Plug 'dkarter/bullets.vim'
+Plug 'frioux/vim-regedit'
+Plug 'robbles/logstash.vim'
+Plug 'christoomey/vim-tmux-navigator'
+Plug 'ryanoasis/vim-devicons' " must be last
 
-Plugin 'altercation/vim-colors-solarized'
-" Plugin 'nanotech/jellybeans.vim'
-Plugin 'tpope/vim-fugitive'
-Plugin 'airblade/vim-gitgutter'
-Plugin 'tpope/vim-surround'
-Plugin 'tpope/vim-commentary'
-Plugin 'scrooloose/nerdtree'
-Plugin 'vim-airline/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
-Plugin 'junegunn/fzf'   " must install fzf locally
-Plugin 'junegunn/fzf.vim'
-Plugin 'w0rp/ale'
-Plugin 'pangloss/vim-javascript'
-Plugin 'mhinz/vim-startify'
-Plugin 'dkarter/bullets.vim'
-Plugin 'frioux/vim-regedit'
-Plugin 'robbles/logstash.vim'
-Plugin 'christoomey/vim-tmux-navigator'
-Plugin 'ryanoasis/vim-devicons' " must be last
-
-call vundle#end()
+call plug#end()
 filetype plugin indent on
 syntax enable
 
@@ -134,7 +130,8 @@ set cmdheight=2         " height of the command-line
 set whichwrap+=<,>,h,l  " allow the specified motions to move to the next/prev line
 set backspace=indent,eol,start  " configure backspace to work like it should
 
-set clipboard=unnamedplus
+" set clipboard=unnamedplus
+set clipboard=autoselect
 
 " Buffer stuff
 set hidden  " allows a modified buffer to be hidden; caution! this makes it easy to forget about unmodified buffers!
