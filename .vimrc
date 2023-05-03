@@ -7,6 +7,7 @@ if !exists('g:env')
         let g:env = 'WINDOWS'
     else
         " LINUX, DARWIN, SUNOS, etc.
+        set rtp+=/Users/michael.lang/DevUtils/homebrew/opt/fzf
         let g:env = toupper(substitute(system('uname'), '\n', '', ''))
     endif
 endif
@@ -19,8 +20,15 @@ if g:env == 'WINDOWS'
     set rtp+=C:/ProgramData/chocolatey/bin/ " Substitute local fzf install location
     call plug#begin()
 else
-    " Since I only use Windows or Linux, I'm lazy and assume Linux here
+    " Linux or MacOS
     set rtp+=/usr/bin/fzf   " Substitute local fzf install location
+    " Install vim-plug if it doesn't already exist
+    let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
+    if empty(glob(data_dir . '/autoload/plug.vim'))
+        silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+        autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+    endif
+    """
     call plug#begin()
 endif
 
@@ -33,7 +41,7 @@ Plug 'tpope/vim-commentary'
 Plug 'scrooloose/nerdtree'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-Plug 'junegunn/fzf'   " must install fzf locally
+Plug 'junegunn/fzf'   " must install fzf, bat, and ripgrep locally
 Plug 'junegunn/fzf.vim'
 Plug 'w0rp/ale'
 Plug 'pangloss/vim-javascript'
@@ -130,7 +138,6 @@ set cmdheight=2         " height of the command-line
 set whichwrap+=<,>,h,l  " allow the specified motions to move to the next/prev line
 set backspace=indent,eol,start  " configure backspace to work like it should
 
-" set clipboard=unnamedplus
 set clipboard=autoselect
 
 " Buffer stuff
@@ -181,10 +188,7 @@ nnoremap <expr> j (v:count == 0 ? 'gj' : 'j')
 " Disable highlight when <leader><cr> is pressed
 map <silent> <leader><cr> :noh<CR>
 
-"nmap <leader>md :%!markdown <cr>   "Markdown to HTML
-"nmap <F8> :TagbarToggle<CR>
 map <C-o> :NERDTreeToggle<CR>
-map ; :Files<CR>
 map <F9> :e $MYVIMRC<CR>
 
 "autocmd BufNewFile,BufRead *.cpp set formatprg=astyle\ -A1fpUxdjk1
@@ -239,40 +243,7 @@ endif
 
 let $FZF_DEFAULT_COMMAND = 'rg --files --no-ignore --hidden --follow --glob "!.git/*" --glob "!node_modules/*"'
 
-" Files + devicons
-function! Fzf_dev()
-  "let l:fzf_files_options = '--preview "rougify {2..-1} | head -'.&lines.'"'
-  let l:fzf_files_options = ' -m --bind ctrl-d:preview-page-down,ctrl-u:preview-page-up --preview "bat --color always --style numbers {2..}"'
-
-  function! s:files()
-    let l:files = split(system($FZF_DEFAULT_COMMAND), '\n')
-    return s:prepend_icon(l:files)
-  endfunction
-
-  function! s:prepend_icon(candidates)
-    let l:result = []
-    for l:candidate in a:candidates
-      let l:filename = fnamemodify(l:candidate, ':p:t')
-      let l:icon = WebDevIconsGetFileTypeSymbol(l:filename, isdirectory(l:filename))
-      call add(l:result, printf('%s %s', l:icon, l:candidate))
-    endfor
-
-    return l:result
-  endfunction
-
-  function! s:edit_file(item)
-    let l:pos = stridx(a:item, ' ')
-    let l:file_path = a:item[pos+1:-1]
-    execute 'silent e' l:file_path
-  endfunction
-
-  call fzf#run({
-        \ 'source': <sid>files(),
-        \ 'sink':   function('s:edit_file'),
-        \ 'options': '-m ' . l:fzf_files_options,
-        \ 'down':    '40%' })
-endfunction
-
+" Requires bat (batcat)
 function! FzfWithDevIcons()
   let l:fzf_files_options = ' -m --bind ctrl-d:preview-page-down,ctrl-u:preview-page-up --preview "bat --color always --style numbers {2..}"'
 
@@ -315,6 +286,38 @@ function! FzfWithDevIcons()
 
 endfunction
 
+" Requires bat (batcat) and devicon-lookup (installed via cargo)
+function! FzfWithDevIcons2()
+    let l:fzf_files_options = ' -m bind ctrl-d:preview-page-down,ctrl-u:preview-page-up --preview "bat --color always --style numbers {2..}"'
 
-"command! FilesWithIcon :call FzfWithDevIcons()
-command! FilesWithIcon :call Fzf_dev()
+    function! s:files()
+        let l:files = split(system($FZF_DEFAULT_COMMAND.'| devicon-lookup'), '\n')
+        return l:files
+    endfunction
+
+    function! s:edit_file(items)
+        let items = a:items
+        let i = 1
+        let ln = len(items)
+        while i < ln
+            let item = items[i]
+            let parts = split(item, ' ')
+            let file_path = get(parts, 1, '')
+            let items[i] = file_path
+            let i += 1
+        endwhile
+        call s:Sink(items)
+    endfunction
+
+    let opts = fzf#wrap({})
+    let opts.source = <sid>files()
+    let s:Sink = opts['sink*']
+    let opts['sink*'] = function('s:edit_file')
+    let opts.options .= l:fzf_files_options
+    call fzf#run(opts)
+endfunction
+
+command! FilesWithIcon :call FzfWithDevIcons()
+command! FilesWithIconFast :call FzfWithDevIcons2()
+
+map ; :FilesWithIconFast<CR>
