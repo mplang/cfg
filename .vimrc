@@ -24,14 +24,12 @@ else
     " Install vim-plug if it doesnt already exist
     let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
     if empty(glob(data_dir . '/autoload/plug.vim'))
-      silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
-      autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+        silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+        autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
     endif
     """
     call plug#begin()
 endif
-
-Plug 'VundleVim/Vundle.vim'
 
 Plug 'altercation/vim-colors-solarized'
 " Plug 'nanotech/jellybeans.vim'
@@ -72,7 +70,7 @@ endif
 
 " Allow color schemes to do bright colors without forcing bold.
 if &t_Co == 8 && $TERM !~# '^linux\|^Eterm'
-  set t_Co=16
+    set t_Co=16
 endif
 
 let g:solarized_termtrans=1
@@ -88,7 +86,7 @@ let g:airline_theme='solarized'
 let g:airline_solarized_bg='dark'
 
 if !exists('g:airline_symbols')
-  let g:airline_symbols = {}
+    let g:airline_symbols = {}
 endif
 let g:airline_symbols.space = "\ua0"
 
@@ -109,9 +107,9 @@ highlight GitGutterChangeDelete cterm=bold ctermbg=234 ctermfg=5
 let g:javascript_plugin_jsdoc=1
 
 let g:ale_fixers = {
-\   '*': ['remove_trailing_lines', 'trim_whitespace'],
-\   'javascript': ['eslint'],
-\}
+            \   '*': ['remove_trailing_lines', 'trim_whitespace'],
+            \   'javascript': ['eslint'],
+            \}
 " let g:ale_lint_on_text_changed = 'never'
 " let g:ale_sign_column_always = 1
 let g:ale_statusline_format = ['⨉ %d', '⚠ %d', '⬥ ok']
@@ -236,83 +234,83 @@ let &t_EI = "\<Esc>[2 q"
 highlight Comment cterm=italic
 
 if exists("g:loaded_webdevicons")
-  call webdevicons#refresh()
+    call webdevicons#refresh()
 endif
 
 let $FZF_DEFAULT_COMMAND = 'rg --files --no-ignore --hidden --follow --glob "!.git/*" --glob "!node_modules/*"'
 
 " Requires bat (batcat)
 function! FzfWithDevIcons()
-  let l:fzf_files_options = ' -m --bind ctrl-d:preview-page-down,ctrl-u:preview-page-up --preview "batcat --color always --style numbers {2..}"'
+    let l:fzf_files_options = ' -m --bind ctrl-d:preview-page-down,ctrl-u:preview-page-up --preview "batcat --color always --style numbers {2..}"'
 
-  function! s:files()
-    let l:files = split(system($FZF_DEFAULT_COMMAND), '\n')
-    return s:prepend_icon(l:files)
-  endfunction
+    function! s:files()
+        let l:files = split(system($FZF_DEFAULT_COMMAND), '\n')
+        return s:prepend_icon(l:files)
+    endfunction
 
-  function! s:prepend_icon(candidates)
-    let result = []
-    for candidate in a:candidates
-      let filename = fnamemodify(candidate, ':p:t')
-      let icon = WebDevIconsGetFileTypeSymbol(filename, isdirectory(filename))
-      call add(result, printf("%s %s", icon, candidate))
-    endfor
+    function! s:prepend_icon(candidates)
+        let result = []
+        for candidate in a:candidates
+            let filename = fnamemodify(candidate, ':p:t')
+            let icon = WebDevIconsGetFileTypeSymbol(filename, isdirectory(filename))
+            call add(result, printf("%s %s", icon, candidate))
+        endfor
 
-    return result
-  endfunction
+        return result
+    endfunction
 
-  function! s:edit_file(items)
-    let items = a:items
-    let i = 1
-    let ln = len(items)
-    while i < ln
-      let item = items[i]
-      let parts = split(item, ' ')
-      let file_path = get(parts, 1, '')
-      let items[i] = file_path
-      let i += 1
-    endwhile
-    call s:Sink(items)
-  endfunction
+    function! s:edit_file(items)
+        let items = a:items
+        let i = 1
+        let ln = len(items)
+        while i < ln
+            let item = items[i]
+            let parts = split(item, ' ')
+            let file_path = get(parts, 1, '')
+            let items[i] = file_path
+            let i += 1
+        endwhile
+        call s:Sink(items)
+    endfunction
 
-  let opts = fzf#wrap({})
-  let opts.source = <sid>files()
-  let s:Sink = opts['sink*']
-  let opts['sink*'] = function('s:edit_file')
-  let opts.options .= l:fzf_files_options
-  call fzf#run(opts)
+    let opts = fzf#wrap({})
+    let opts.source = <sid>files()
+    let s:Sink = opts['sink*']
+    let opts['sink*'] = function('s:edit_file')
+    let opts.options .= l:fzf_files_options
+    call fzf#run(opts)
 
 endfunction
 
 " requires bat (batcat) and devicon-lookup (installed via cargo)
 function! FzfWithDevIcons2()
-  let l:fzf_files_options = ' -m --bind ctrl-d:preview-page-down,ctrl-u:preview-page-up --preview "batcat --color always --style numbers {2..}"'
+    let l:fzf_files_options = ' -m --bind ctrl-d:preview-page-down,ctrl-u:preview-page-up --preview "batcat --color always --style numbers {2..}"'
 
-  function! s:files()
-    let l:files = split(system($FZF_DEFAULT_COMMAND.'| devicon-lookup'), '\n')
-    return l:files
-  endfunction
+    function! s:files()
+        let l:files = split(system($FZF_DEFAULT_COMMAND.'| devicon-lookup'), '\n')
+        return l:files
+    endfunction
 
-  function! s:edit_file(items)
-    let items = a:items
-    let i = 1
-    let ln = len(items)
-    while i < ln
-      let item = items[i]
-      let parts = split(item, ' ')
-      let file_path = get(parts, 1, '')
-      let items[i] = file_path
-      let i += 1
-    endwhile
-    call s:Sink(items)
-  endfunction
+    function! s:edit_file(items)
+        let items = a:items
+        let i = 1
+        let ln = len(items)
+        while i < ln
+            let item = items[i]
+            let parts = split(item, ' ')
+            let file_path = get(parts, 1, '')
+            let items[i] = file_path
+            let i += 1
+        endwhile
+        call s:Sink(items)
+    endfunction
 
-  let opts = fzf#wrap({})
-  let opts.source = <sid>files()
-  let s:Sink = opts['sink*']
-  let opts['sink*'] = function('s:edit_file')
-  let opts.options .= l:fzf_files_options
-  call fzf#run(opts)
+    let opts = fzf#wrap({})
+    let opts.source = <sid>files()
+    let s:Sink = opts['sink*']
+    let opts['sink*'] = function('s:edit_file')
+    let opts.options .= l:fzf_files_options
+    call fzf#run(opts)
 endfunction
 
 command! FIlesWithIcon :call FzfWithDevIcons()
