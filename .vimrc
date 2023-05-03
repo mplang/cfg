@@ -288,7 +288,7 @@ endfunction
 
 " Requires bat (batcat) and devicon-lookup (installed via cargo)
 function! FzfWithDevIcons2()
-    let l:fzf_files_options = ' -m bind ctrl-d:preview-page-down,ctrl-u:preview-page-up --preview "bat --color always --style numbers {2..}"'
+    let l:fzf_files_options = ' -m --bind ctrl-d:preview-page-down,ctrl-u:preview-page-up --preview "bat --color always --style numbers {2..}"'
 
     function! s:files()
         let l:files = split(system($FZF_DEFAULT_COMMAND.'| devicon-lookup'), '\n')
