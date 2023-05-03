@@ -189,10 +189,7 @@ nnoremap <expr> j (v:count == 0 ? 'gj' : 'j')
 " Disable highlight when <leader><cr> is pressed
 map <silent> <leader><cr> :noh<CR>
 
-"nmap <leader>md :%!markdown <cr>   "Markdown to HTML
-"nmap <F8> :TagbarToggle<CR>
 map <C-o> :NERDTreeToggle<CR>
-map ; :Files<CR>
 map <F9> :e $MYVIMRC<CR>
 
 "autocmd BufNewFile,BufRead *.cpp set formatprg=astyle\ -A1fpUxdjk1
@@ -243,3 +240,82 @@ if exists("g:loaded_webdevicons")
 endif
 
 let $FZF_DEFAULT_COMMAND = 'rg --files --no-ignore --hidden --follow --glob "!.git/*" --glob "!node_modules/*"'
+
+" Requires bat (batcat)
+function! FzfWithDevIcons()
+  let l:fzf_files_options = ' -m --bind ctrl-d:preview-page-down,ctrl-u:preview-page-up --preview "batcat --color always --style numbers {2..}"'
+
+  function! s:files()
+    let l:files = split(system($FZF_DEFAULT_COMMAND), '\n')
+    return s:prepend_icon(l:files)
+  endfunction
+
+  function! s:prepend_icon(candidates)
+    let result = []
+    for candidate in a:candidates
+      let filename = fnamemodify(candidate, ':p:t')
+      let icon = WebDevIconsGetFileTypeSymbol(filename, isdirectory(filename))
+      call add(result, printf("%s %s", icon, candidate))
+    endfor
+
+    return result
+  endfunction
+
+  function! s:edit_file(items)
+    let items = a:items
+    let i = 1
+    let ln = len(items)
+    while i < ln
+      let item = items[i]
+      let parts = split(item, ' ')
+      let file_path = get(parts, 1, '')
+      let items[i] = file_path
+      let i += 1
+    endwhile
+    call s:Sink(items)
+  endfunction
+
+  let opts = fzf#wrap({})
+  let opts.source = <sid>files()
+  let s:Sink = opts['sink*']
+  let opts['sink*'] = function('s:edit_file')
+  let opts.options .= l:fzf_files_options
+  call fzf#run(opts)
+
+endfunction
+
+" requires bat (batcat) and devicon-lookup (installed via cargo)
+function! FzfWithDevIcons2()
+  let l:fzf_files_options = ' -m --bind ctrl-d:preview-page-down,ctrl-u:preview-page-up --preview "batcat --color always --style numbers {2..}"'
+
+  function! s:files()
+    let l:files = split(system($FZF_DEFAULT_COMMAND.'| devicon-lookup'), '\n')
+    return l:files
+  endfunction
+
+  function! s:edit_file(items)
+    let items = a:items
+    let i = 1
+    let ln = len(items)
+    while i < ln
+      let item = items[i]
+      let parts = split(item, ' ')
+      let file_path = get(parts, 1, '')
+      let items[i] = file_path
+      let i += 1
+    endwhile
+    call s:Sink(items)
+  endfunction
+
+  let opts = fzf#wrap({})
+  let opts.source = <sid>files()
+  let s:Sink = opts['sink*']
+  let opts['sink*'] = function('s:edit_file')
+  let opts.options .= l:fzf_files_options
+  call fzf#run(opts)
+endfunction
+
+command! FIlesWithIcon :call FzfWithDevIcons()
+command! FilesWithIconFast :call FzfWithDevIcons2()
+
+map ; :FilesWithIconFast<CR>
