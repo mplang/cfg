@@ -95,8 +95,6 @@ zstyle ':conda_zsh_completion:*' use-groups true
 
 source $ZSH/oh-my-zsh.sh
 
-autoload -U compinit && compinit
-
 # export MANPATH="/usr/local/man:$MANPATH"
 
 # You may need to manually set your language environment
@@ -129,6 +127,8 @@ alias pip='DISPLAY= pip'
 
 export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2; exit;}'):0.0
 export BROWSER=wslview
+export PAGER=less
+export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 eval `dircolors ~/.dir_colors`
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
@@ -166,6 +166,15 @@ bindkey "^Z" Resume
 #
 la() {
     ls -alh --color=always "$@" | less -R;
+}
+
+battail() {
+    tail -f "$@" | bat --paging=never -l log
+}
+
+alias bathelp='bat --plain --language=help'
+help() {
+    "$@" --help 2>&1 | bathelp
 }
 
 # >>> conda initialize >>>
