@@ -5,7 +5,7 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
     source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-export PATH=$HOME/bin:$HOME/DevUtils/homebrew/bin:/usr/local/bin:$HOME/.jenv/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:$PATH
+export PATH=$HOME/bin:$HOME/DevUtils/homebrew/bin:/usr/local/bin:$HOME/.jenv/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:$HOME/.cargo/bin:$PATH
 #
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
@@ -98,8 +98,6 @@ zstyle 'omz:plugins:nvm' autoload yes
 
 source $ZSH/oh-my-zsh.sh
 
-autoload -U compinit && compinit
-
 # export MANPATH="/usr/local/man:$MANPATH"
 
 # You may need to manually set your language environment
@@ -133,7 +131,8 @@ export JIRA_URL="https://diameterhealth.atlassian.net"
 export JIRA_RAPID_BOARD=true
 export JIRA_NAME="Michael Lang"
 export NODE_PATH=$(npm root -g)
-
+export PAGER=less
+export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 eval `gdircolors ~/.dir_colors`
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
@@ -157,6 +156,15 @@ bindkey "^Z" Resume
 
 la() {
     ls -alh --color=always "$@" | less -R;
+}
+
+battail() {
+    tail -f "$@" | bat --paging=never -l log
+}
+
+alias bathelp='bat --plain --language=help'
+help() {
+    "$@" --help 2>&1 | bathelp
 }
 
 export PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
@@ -207,3 +215,5 @@ unset __conda_setup
 # <<< conda initialize <<<
 
 eval "$(direnv hook zsh)"
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
