@@ -78,7 +78,7 @@ COMPLETION_WAITING_DOTS="true"
 # git clone https://github.com/zsh-users/zsh-history-substring-search ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-history-substring-search
 # git clone https://github.com/esc/conda-zsh-completion ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/conda-zsh-completion
 # git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
-plugins=(vi-mode tmux keychain gpg-agent history-substring-search zsh-autosuggestions command-not-found git conda-zsh-completion dirhistory web-search colored-man-pages pj)
+plugins=(vi-mode tmux keychain gpg-agent history-substring-search zsh-autosuggestions command-not-found git conda-zsh-completion dirhistory web-search colored-man-pages pj nvm)
 
 # User configuration
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=244"
@@ -129,7 +129,7 @@ export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2; exit;}
 export BROWSER=wslview
 export PAGER=less
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"
-eval `dircolors ~/.dir_colors`
+# eval `dircolors ~/.dir_colors`
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
@@ -165,7 +165,7 @@ bindkey "^Z" Resume
 # export LESS_TERMCAP_us=$'\e[1;4;31m'
 #
 la() {
-    ls -alh --color=always "$@" | less -R;
+    lsd -alh --color=always --icon=always --hyperlink=always "$@" | less -R;
 }
 
 battail() {
@@ -198,3 +198,7 @@ eval "$(direnv hook zsh)"
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
