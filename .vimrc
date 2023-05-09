@@ -39,7 +39,8 @@ Plug 'tpope/vim-commentary'
 Plug 'scrooloose/nerdtree'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-Plug 'junegunn/fzf'   " must install fzf, bat (batcat), and ripgrep locally
+" must install fzf, bat, and ripgrep locally
+Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'w0rp/ale'
 Plug 'mhinz/vim-startify'
