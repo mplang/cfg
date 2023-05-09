@@ -79,7 +79,7 @@ COMPLETION_WAITING_DOTS="true"
 # git clone https://github.com/esc/conda-zsh-completion ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/conda-zsh-completion
 # git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 
-plugins=(vi-mode tmux history-substring-search zsh-autosuggestions command-not-found git nvm conda-zsh-completion jira dirhistory web-search colored-man-pages pj mvn)
+plugins=(vi-mode tmux history-substring-search zsh-autosuggestions command-not-found git nvm conda-zsh-completion jira dirhistory web-search colored-man-pages pj mvn fzf fzf-tab)
 
 # User configuration
 
@@ -95,6 +95,16 @@ zstyle ':conda_zsh_completion:*' use-groups true
 zstyle 'omz:plugins:nvm' lazy yes
 zstyle 'omz:plugins:nvm' lazy-cmd eslint prettier typescript
 zstyle 'omz:plugins:nvm' autoload yes
+# disable sort when completing `git checkout`
+zstyle ':completion:*:git-checkout:*' sort false
+# # set descriptions format to enable group support
+zstyle ':completion:*:descriptions' format '[%d]'
+# # set list-colors to enable filename colorizing
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+# # preview directory's content with exa when completing cd
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'exa -1 --color=always $realpath'
+# # switch group using `,` and `.`
+zstyle ':fzf-tab:*' switch-group ',' '.'
 
 source $ZSH/oh-my-zsh.sh
 
@@ -133,7 +143,8 @@ export JIRA_NAME="Michael Lang"
 export NODE_PATH=$(npm root -g)
 export PAGER=less
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"
-eval `gdircolors ~/.dir_colors`
+export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border'
+# eval `gdircolors ~/.dir_colors`
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
@@ -160,6 +171,10 @@ la() {
 
 battail() {
     tail -f "$@" | bat --paging=never -l log
+}
+
+tiltdo() {
+    (pj fusion/docker && tilt "$@")
 }
 
 alias bathelp='bat --plain --language=help'
