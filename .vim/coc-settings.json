@@ -1,0 +1,14 @@
+{
+    "languageserver": {
+        "dockerfile": {
+            "command": "docker-langserver",
+            "filetypes": ["dockerfile"],
+            "args": ["--stdio"]
+        },
+        "kotlin": {
+            "command": "~/.vim/lsp/kotlin/server/bin/kotlin-language-server",
+            "filetypes": ["kotlin"]
+        }
+    },
+    "snippets.ultisnips.pythonPrompt": false
+}
