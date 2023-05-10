@@ -1,0 +1,35 @@
+#!python3
+import sys
+import subprocess
+
+def strip(selection):
+    if not selection:
+        return ''
+    ssplit = selection.split()
+    sslen = len(ssplit)
+    if not sslen:
+        return ''
+    return ssplit[0] if sslen == 1 else ssplit[1]
+
+def fzf(args):
+    rg_res = subprocess.run(
+            ['rg',
+                '--pretty', '--smart-case', '--files',
+                '--no-ignore', '--hidden',
+                '--glob', '!**/node_modules/**'],
+            check=True,
+            stdout=subprocess.PIPE)
+    dicon_res = subprocess.run(
+            ['devicon-lookup', '-c', '-p', ':'],
+            check=True,
+            input=rg_res.stdout,
+            stdout=subprocess.PIPE)
+    return subprocess.run(
+            ['fzf-tmux', '-p', '--ansi', *args],
+            check=False,
+            input=dicon_res.stdout,
+            capture_output=True).stdout.decode('utf-8')
+
+
+if __name__ == '__main__':
+    print(strip(fzf(sys.argv[1:])))
