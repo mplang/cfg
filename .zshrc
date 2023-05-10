@@ -181,8 +181,6 @@ fzfupdate() {
     (cd ~/.fzf && git pull && ./install)
 }
 
-export FZF_DEFAULT_OPTS='--ansi'
-# export FZF_DEFAULT_COMMAND=$'rg --pretty --smart-case --files --no-ignore --hidden --follow --glob \'!**/node_modules/**\' | devicon-lookup -c -p :'
 export FZF_DEFAULT_COMMAND=$'rg --pretty --smart-case --files --no-ignore --hidden --follow --glob \'!**/node_modules/**\''
 
 # Preview file content using bat (https://github.com/sharkdp/bat)
@@ -190,7 +188,7 @@ export FZF_CTRL_T_OPTS="
   --preview 'bat -n --color=always {}'
   --bind 'ctrl-/:change-preview-window(down|hidden|)'"
 
-alias fzfz='fzf-tmux -p'
+export FZF_DEFAULT_OPTS='--color=bg+:#3c3836,bg:#32302f,spinner:#fb4934,hl:#928374,fg:#ebdbb2,header:#928374,info:#8ec07c,pointer:#fb4934,marker:#fb4934,fg+:#ebdbb2,prompt:#fb4934,hl+:#fb4934 --ansi'
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
