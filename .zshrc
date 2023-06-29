@@ -78,7 +78,7 @@ COMPLETION_WAITING_DOTS="true"
 # git clone https://github.com/zsh-users/zsh-history-substring-search ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-history-substring-search
 # git clone https://github.com/esc/conda-zsh-completion ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/conda-zsh-completion
 # git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
-plugins=(vi-mode tmux keychain gpg-agent history-substring-search zsh-autosuggestions command-not-found git conda-zsh-completion dirhistory web-search colored-man-pages pj nvm)
+plugins=(vi-mode keychain gpg-agent history-substring-search zsh-autosuggestions command-not-found git conda-zsh-completion dirhistory web-search colored-man-pages pj nvm tmux)
 
 # User configuration
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=244"
@@ -125,6 +125,7 @@ alias ls=lsd
 alias pip3='DISPLAY= pip3'
 alias pip='DISPLAY= pip'
 
+export PROMPT_EOL_MARK=
 export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2; exit;}'):0.0
 export BROWSER=wslview
 export PAGER=less

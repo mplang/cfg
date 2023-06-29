@@ -1,4 +1,6 @@
 {
     "suggest.noselect": true,
-    "diagnostic.displayByAle": true
+    "diagnostic.displayByAle": true,
+    "python.formatting.provider": "black",
+
 }

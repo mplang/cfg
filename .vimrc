@@ -50,6 +50,8 @@ Plug 'robbles/logstash.vim'
 Plug 'christoomey/vim-tmux-navigator'
 " :CocInstall coc-html coc-json coc-java coc-tsserver coc-sh coc-markdownlint coc-pyright coc-eslint coc-prettier coc-snippets
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'jpalardy/vim-slime', { 'for': 'python' }
+Plug 'hanschen/vim-ipython-cell', { 'for': 'python' }
 Plug 'ryanoasis/vim-devicons' " must be last
 
 call plug#end()
@@ -166,6 +168,11 @@ set incsearch
 " suppress error sounds/flashes
 set noerrorbells novisualbell t_vb=
 autocmd GUIEnter * set visualbell t_vb=     " must be set after GUI is loaded
+
+" slime configs
+let g:slime_target = "tmux"
+let g:slime_paste_file = expand("$HOME/.vim/tmp/.slimefile")
+let g:slime_default_config = {"socket_name": "default", "target_pane": "{last}"}
 
 " misc settings
 set cmdheight=2         " height of the command-line
