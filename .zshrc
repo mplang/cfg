@@ -79,7 +79,7 @@ COMPLETION_WAITING_DOTS="true"
 # git clone https://github.com/esc/conda-zsh-completion ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/conda-zsh-completion
 # git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 
-plugins=(vi-mode tmux history-substring-search zsh-autosuggestions command-not-found git nvm conda-zsh-completion jira dirhistory web-search colored-man-pages pj mvn fzf fzf-tab)
+plugins=(vi-mode tmux history-substring-search zsh-autosuggestions command-not-found git nvm conda-zsh-completion jira dirhistory web-search colored-man-pages pj mvn fzf fzf-tab kubectl kubectx)
 
 # User configuration
 
@@ -88,7 +88,7 @@ ZSH_TMUX_AUTOSTART=true
 ZSH_TMUX_UNICODE=true
 ZSH_TMUX_DEFAULT_SESSION_NAME="primary"
 ZSH_TMUX_FIXTERM=false
-PROJECT_PATHS=(~/dhdev)
+PROJECT_PATHS=(~/dhdev ~/bin)
 export NVM_HOMEBREW=$(brew --prefix nvm)
 zstyle ':completion::complete:*' use-cache 1
 zstyle ':conda_zsh_completion:*' use-groups true
@@ -144,6 +144,7 @@ export NODE_PATH=$(npm root -g)
 export PAGER=less
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border'
+export PROMPT_EOL_MARK=
 # eval `gdircolors ~/.dir_colors`
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
@@ -223,7 +224,7 @@ else
     if [ -f "/Users/michael.lang/DevUtils/homebrew/Caskroom/miniconda/base/etc/profile.d/conda.sh" ]; then
         . "/Users/michael.lang/DevUtils/homebrew/Caskroom/miniconda/base/etc/profile.d/conda.sh"
     else
-        export PATH="/Users/michael.lang/DevUtils/homebrew/Caskroom/miniconda/base/bin:$PATH"
+        export PATH="$PATH:/Users/michael.lang/DevUtils/homebrew/Caskroom/miniconda/base/bin"
     fi
 fi
 unset __conda_setup
