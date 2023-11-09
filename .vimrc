@@ -76,6 +76,11 @@ endif
 
 if has('termguicolors') || has('vcon')
     set termguicolors   " enable 24-bit colors
+    if exists("$TMUX")
+        " let &t_RB = "\ePtmux;\e\e]11;?\007\e\\"
+        let &t_8f = "\<Esc>[38:2:%lu:%lu:%lum"
+        let &t_8b = "\<Esc>[48:2:%lu:%lu:%lum"
+    endif
 endif
 
 " Allow color schemes to do bright colors without forcing bold.
