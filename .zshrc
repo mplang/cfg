@@ -193,14 +193,14 @@ export FZF_DEFAULT_OPTS='--color=bg+:#3c3836,bg:#32302f,spinner:#fb4934,hl:#9283
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/home/michael/bin/anaconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+__conda_setup="$('/home/michael/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
 if [ $? -eq 0 ]; then
     eval "$__conda_setup"
 else
-    if [ -f "/home/michael/bin/anaconda3/etc/profile.d/conda.sh" ]; then
-        . "/home/michael/bin/anaconda3/etc/profile.d/conda.sh"
+    if [ -f "/home/michael/miniconda3/etc/profile.d/conda.sh" ]; then
+        . "/home/michael/miniconda3/etc/profile.d/conda.sh"
     else
-        export PATH="/home/michael/bin/anaconda3/bin:$PATH"
+        export PATH="/home/michael/miniconda3/bin:$PATH"
     fi
 fi
 unset __conda_setup
